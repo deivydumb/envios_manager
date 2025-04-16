@@ -1,0 +1,54 @@
+const responseMessages = {
+    200: 'Operación exitosa',
+    201: 'Recurso creado exitosamente',
+    400: 'Error de validación',
+    401: 'No autorizado',
+    403: 'Prohibido',
+    404: 'Recurso no encontrado',
+    500: 'Error interno del servidor',
+  };
+  
+  const buildResponse = ({ 
+    mensaje = null, 
+    status = 200, 
+    data = null,
+    errorDetails = null 
+  }) => {
+    const response = {
+      status,
+      mensaje: mensaje || responseMessages[status] || 'Operación completada',
+      data: data || null
+    };
+  
+    // Solo agregar errorDetails si existe y el status es de error (400+)
+    if (errorDetails && status >= 400) {
+      response.data = {
+        ...(data || {}),
+        errorDetails: Array.isArray(errorDetails) 
+          ? errorDetails 
+          : [{ message: errorDetails }]
+      };
+    }
+  
+    return response;
+  };
+  
+  // Función específica para errores de validación
+  const buildValidationError = (errors) => {
+    const details = errors?.map?.(err => ({
+      campo: err.path || 'general',
+      mensaje: err.message || 'Error de validación',
+      valor: err.value || null
+    })) || [{ mensaje: 'Error de validación no especificado' }];
+  
+    return buildResponse({
+      status: 400,
+      mensaje: 'Error en la validación de datos',
+      errorDetails: details
+    });
+  };
+  
+  module.exports = {
+    buildResponse,
+    buildValidationError
+  };
