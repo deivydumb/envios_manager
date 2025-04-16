@@ -3,6 +3,7 @@ const app = express();
 const userRoutes = require('./routes/userRoutes.js');
 const packageRoutes = require('./routes/packageRoutes.js');
 const shipmentRoutes = require('./routes/shipmentRoutes.js');
+const conveyor = require('./routes/conveyorRoutes.js');
 const User = require('./models/userModel.js');
 const Package = require('./models/packageModel.js');
 const Shipment = require('./models/shipmentModel.js');
@@ -20,6 +21,7 @@ app.use('/api', userRoutes);
 app.use('/api',packageRoutes)
 app.use('/api',packageRoutes)
 app.use('/api',shipmentRoutes) 
+app.use('/api', conveyor);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
