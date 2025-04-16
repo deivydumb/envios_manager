@@ -117,5 +117,6 @@ router.post('/package', controller.createPackage);
 router.get('/package', controller.findAll);
 router.get('/package/:id', controller.findById);
 router.put('/package/:id', controller.update);
+router.patch('/:id/assign-journey', controller.assignJourneyToPackage);
 
 module.exports = router;

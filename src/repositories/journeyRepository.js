@@ -1,4 +1,4 @@
-const Journey = require('../models/Journey');
+const Journey = require('../models/journeyModel.js');
 
 const create = async (data) => {
   return await Journey.create(data);

@@ -88,6 +88,17 @@ const remove = async (req, res) => {
     }
   };
   
+  const assignJourneyToPackage = async (req, res) => {
+    const packageId = req.params.id;
+    const { journeyId } = req.body;
+  
+    try {
+      const updatedPackage = await packageService.assignJourneyToPackage(packageId, journeyId);
+      res.status(200).json(updatedPackage);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
 
   module.exports = {
     createPackage,
@@ -95,4 +106,5 @@ const remove = async (req, res) => {
     remove,
     findById,
     update,
+    assignJourneyToPackage
   }

@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const Shipment = require("./shipmentModel"); 
+const Journey = require("./journeyModel"); // Asegúrate de importar el modelo Journey
 
 const Package = sequelize.define(
   "Package",
@@ -26,7 +27,16 @@ const Package = sequelize.define(
         key: "id",
       },
     },
+    journeyId: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // ← porque se asigna después
+      references: {
+        model: 'Journey',
+        key: 'id'
+      }
+    }
   },
+  
   {
     freezeTableName: true,
     tableName: "Package",
@@ -39,4 +49,6 @@ Package.belongsTo(Shipment, {
 });
 Shipment.hasMany(Package, { foreignKey: "shipmentId" });
 
+Journey.hasMany(Package, { foreignKey: 'journeyId', as: 'packages' });
+Package.belongsTo(Journey, { foreignKey: 'journeyId', as: 'journey' });
 module.exports = Package;

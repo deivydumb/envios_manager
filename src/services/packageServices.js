@@ -5,6 +5,18 @@ const userRepository = require('../repositories/userRepository');
 
 
 
+const assignJourneyToPackage = async (packageId, journeyId) => {
+  const pack = await packageRepository.findById(packageId);
+  if (!pack) throw new Error('Paquete no encontrado');
+
+  const journey = await journeyRepository.findById(journeyId);
+  if (!journey) throw new Error('Ruta no encontrada');
+
+  pack.journeyId = journeyId;
+  await packageRepository.save(pack);
+
+  return pack;
+};
 
 const createPackage = async (packageData) => {
   const { shipmentId } = packageData;
@@ -79,4 +91,5 @@ const remove = async (id) => {
     findById,
     update,
     remove,
+    assignJourneyToPackage
   };
