@@ -1,7 +1,6 @@
 const { get } = require('http');
 const UserModel = require('../models/userModel');
 
-const users = [];
 
 const getAllUsers = () => {
   return UserModel.findAll()
