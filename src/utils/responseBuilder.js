@@ -1,11 +1,4 @@
 const responseMessages = {
-    200: 'Operación exitosa',
-    201: 'Recurso creado exitosamente',
-    400: 'Error de validación',
-    401: 'No autorizado',
-    403: 'Prohibido',
-    404: 'Recurso no encontrado',
-    500: 'Error interno del servidor',
   };
   
   const buildResponse = ({ 
@@ -16,7 +9,7 @@ const responseMessages = {
   }) => {
     const response = {
       status,
-      mensaje: mensaje || responseMessages[status] || 'Operación completada',
+      mensaje: mensaje ,
       data: data || null
     };
   

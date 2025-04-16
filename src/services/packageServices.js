@@ -1,63 +1,82 @@
 const Package = require('../models/packageModel');
+const shipmentModel = require('../models/shipmentModel');
 const packageRepository = require('../repositories/packageRepository');
 const userRepository = require('../repositories/userRepository');
 
 
 
 
-const getAllPackage = () => {
-  return packageRepository.getAllPackage();
+const createPackage = async (packageData) => {
+  const { shipmentId } = packageData;
+  const shipment = await shipmentModel.findByPk(shipmentId);
+  if (!shipment) {
+    throw {
+      status: 400,
+      message: `El shipment con ID ${shipmentId} no existe`,
+      code: 'SHIPMENT_NOT_FOUND'
+    };
+  }
+
+  return await packageRepository.create(packageData);
 };
 
-const getPackageById = async (id) => {
-  return await packageRepository.findById(id); 
+
+const findAll = async () => {
+  return await packageRepository.findAll();
 };
 
-const createPackage = async (packageData, userId) => {
-    const requiredFields = ['peso', 'largo', 'ancho', 'unidades'];
-    const missingFields = requiredFields.filter(field => !packageData[field]);
-    if (missingFields.length > 0) {
-      throw {
-        status: 400,
-        message: `Faltan campos obligatorios: ${missingFields.join(', ')}`,
-        code: 'MISSING_FIELDS'
-      };
-    }
-    const userExists = await userRepository.findById(userId);
-    if (!userExists) {
-      throw {
-        status: 404,
-        message: 'Usuario no encontrado',
-        code: 'USER_NOT_FOUND',
-        details: { userId }
-      };
-    }
-  
-    return await packageRepository.create({
-      ...packageData,
-      userId 
-    });
-  };
+const findById = async (id) => {
+  const pkg = await packageRepository.findById(id);
+  if (!pkg) {
+    throw {
+      status: 404,
+      message: `Paquete con ID ${id} no encontrado`,
+      code: 'PACKAGE_NOT_FOUND'
+    };
+  }
+  return pkg;
+};
 
-  const updatePackage = async (id, updateData) => {
-    try {
-      const updated = await packageRepository.update(id, updateData);
-      if (!updated) {
-        const error = new Error('Paquete no encontrado');
-        error.status = 404;
-        throw error;
-      }
-      return updated;
-    } catch (error) {
-      throw error;
-    }
-  };
-  
+const update = async (id, updateData) => {
+  if (updateData.shipmentId !== undefined) {
+    throw {
+      status: 400,
+      message: "No se permite modificar el shipmentId de un paquete",
+      code: "SHIPMENT_UPDATE_NOT_ALLOWED"
+    };
+  }
+
+  const pkg = await packageRepository.findById(id);
+  if (!pkg) {
+    throw {
+      status: 404,
+      message: `Paquete con ID ${id} no encontrado`,
+      code: 'PACKAGE_NOT_FOUND'
+    };
+  }
+
+  return await packageRepository.update(id, updateData);
+};
+
+const remove = async (id) => {
+  const pkg = await packageRepository.findById(id);
+  if (!pkg) {
+    throw {
+      status: 404,
+      message: `Paquete con ID ${id} no encontrado`,
+      code: 'PACKAGE_NOT_FOUND'
+    };
+  }
+
+  await packageRepository.remove(id);
+  return { message: `Paquete con ID ${id} eliminado exitosamente` };
+};
 
 
   module.exports = {
     createPackage,
-    getAllPackage,
-    getPackageById,
-    updatePackage
+    findAll,
+    findById,
+    update,
+    remove,
   };

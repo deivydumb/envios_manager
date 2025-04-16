@@ -51,16 +51,17 @@ const User = sequelize.define('User', {
     name: { type: DataTypes.STRING, allowNull: false },
     identificacion: { type: DataTypes.STRING, unique: true, allowNull: false },
     telefono: { type: DataTypes.STRING, allowNull: true }, // Cambiado a opcional
-    email: { type: DataTypes.STRING, allowNull: true, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: false },
     rol: { type: DataTypes.STRING, allowNull: false }
   },{
     freezeTableName: true,
     tableName: 'User',
   });
   User.associate = (models) => {
-    User.hasMany(models.Package, {
+    User.hasMany(models.Shipment, {
       foreignKey: 'userId'
     });
   };
+  
   
 module.exports = User;

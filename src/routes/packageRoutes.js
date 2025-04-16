@@ -111,10 +111,11 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/packageController');
+const { findById } = require('../repositories/userRepository');
 
 router.post('/package', controller.createPackage);
-router.get('/package', controller.getAllPackage);
-router.get('/package/:id', controller.getPackageById);
-router.put('/package/:id', controller.updatePackage);
+router.get('/package', controller.findAll);
+router.get('/package/:id', controller.findById);
+router.put('/package/:id', controller.update);
 
 module.exports = router;
