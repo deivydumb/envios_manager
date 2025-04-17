@@ -29,6 +29,14 @@ const controller = require('../controllers/userController');
  *                     type: string
  *                   name:
  *                     type: string
+ *                   identificacion:
+ *                     type: string
+ *                   telefono:
+ *                     type: string
+ *                   rol:
+ *                     type: string
+ *                   email:
+ *                     type: string
  */
 router.get('/users', controller.getAllUsers);
 
@@ -57,6 +65,14 @@ router.get('/users', controller.getAllUsers);
  *                   type: string
  *                 name:
  *                   type: string
+ *                 identificacion:
+ *                   type: string
+ *                 telefono:
+ *                   type: string
+ *                 rol:
+ *                   type: string
+ *                 email:
+ *                   type: string
  *       404:
  *         description: User not found
  */
@@ -75,8 +91,16 @@ router.get('/users/:id', controller.getUserById);
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
+ *                   name:
+ *                     type: string
+ *                   identificacion:
+ *                     type: string
+ *                   telefono:
+ *                     type: string
+ *                   rol:
+ *                     type: string
+ *                   email:
+ *                     type: string
  *     responses:
  *       201:
  *         description: User created

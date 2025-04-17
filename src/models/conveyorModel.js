@@ -1,6 +1,55 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const Vehicle = require("./vehicleModel");
+
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Conveyor:
+ *       type: object
+ *       required:
+ *         - nombre
+ *         - identificacion
+ *         - telefono
+ *         - email
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the conveyor.
+ *         nombre:
+ *           type: string
+ *           description: Name of the conveyor.
+ *         identificacion:
+ *           type: string
+ *           description: Identification number of the conveyor.
+ *         telefono:
+ *           type: string
+ *           description: Phone number of the conveyor.
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email address of the conveyor.
+ *         empresa:
+ *           type: string
+ *           description: Company associated with the conveyor (optional).
+ *         licencia_transporte:
+ *           type: string
+ *           description: Transport license of the conveyor (optional).
+ *         vehicleId:
+ *           type: integer
+ *           description: ID of the associated vehicle (optional).
+ *       example:
+ *         id: 1
+ *         nombre: "John Doe"
+ *         identificacion: "123456789"
+ *         telefono: "+1234567890"
+ *         email: "johndoe@example.com"
+ *         empresa: "Transport Inc."
+ *         licencia_transporte: "ABC12345"
+ *         vehicleId: 10
+ */
 const Conveyor = sequelize.define(
     "Conveyor",
     {
