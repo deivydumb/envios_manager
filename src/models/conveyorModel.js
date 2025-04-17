@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-
-const Coveyor = sequelize.define(
+const Vehicle = require("./vehicleModel");
+const Conveyor = sequelize.define(
     "Conveyor",
     {
         id: {
@@ -38,9 +38,25 @@ const Coveyor = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true
           },
+          vehicleId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+              model: "Vehicle",
+              key: "id"
+            }
+          }
         }, {
           tableName: 'Conveyors',
           timestamps: true,
           paranoid: true
         });
-module.exports = Coveyor;
+
+        Conveyor.associate = (models) => {
+          Conveyor.belongsTo(models.Vehicle, {
+            foreignKey: "vehicleId",
+            as: "vehicle"
+          });
+        };
+
+module.exports = Conveyor;

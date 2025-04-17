@@ -2,14 +2,14 @@ const responseMessages = {
   };
   
   const buildResponse = ({ 
-    mensaje = null, 
+    message = null, 
     status = 200, 
     data = null,
     errorDetails = null 
   }) => {
     const response = {
       status,
-      mensaje: mensaje ,
+      message: message ,
       data: data || null
     };
   
@@ -30,13 +30,13 @@ const responseMessages = {
   const buildValidationError = (errors) => {
     const details = errors?.map?.(err => ({
       campo: err.path || 'general',
-      mensaje: err.message || 'Error de validación',
+      message: err.message || 'Error de validación',
       valor: err.value || null
-    })) || [{ mensaje: 'Error de validación no especificado' }];
+    })) || [{ message: 'Error de validación no especificado' }];
   
     return buildResponse({
       status: 400,
-      mensaje: 'Error en la validación de datos',
+      message: 'Error en la validación de datos',
       errorDetails: details
     });
   };
