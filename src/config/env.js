@@ -1,4 +1,4 @@
-require('dotenv').config(); // Asegurar carga de variables .env
+require('dotenv').config(); 
 
 const environments = ['development', 'test', 'production'];
 const currentEnv = process.env.NODE_ENV || 'development';
@@ -17,5 +17,7 @@ module.exports = {
   DB_PASSWORD: process.env.DB_PASSWORD || '',
   DB_NAME: process.env.DB_NAME || `myapp_${currentEnv}`,
   DB_SSL: process.env.DB_SSL || 'false',
-  DB_LOGGING: process.env.DB_LOGGING || 'false'
+  DB_LOGGING: process.env.DB_LOGGING || 'false',
+  JWT_SECRET: "test",
+  JWT_EXPIRES_IN: "1h"
 };

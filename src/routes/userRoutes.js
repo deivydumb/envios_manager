@@ -1,163 +1,19 @@
 const express = require('express');
-const router = express.Router();
 const controller = require('../controllers/userController');
+const authenticateJWT = require('../middlewares/auth');
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: User management
- */
+const router = express.Router();
 
-
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: List of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   name:
- *                     type: string
- *                   identificacion:
- *                     type: string
- *                   telefono:
- *                     type: string
- *                   rol:
- *                     type: string
- *                   email:
- *                     type: string
- */
-router.get('/users', controller.getAllUsers);
-
-router.get('/users/email/:email', controller.getUserByEmail);
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Get a user by ID
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: User ID
- *     responses:
- *       200:
- *         description: User data
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 name:
- *                   type: string
- *                 identificacion:
- *                   type: string
- *                 telefono:
- *                   type: string
- *                 rol:
- *                   type: string
- *                 email:
- *                   type: string
- *       404:
- *         description: User not found
- */
-router.get('/users/:id', controller.getUserById);
-
-/**
- * @swagger
- * /users:
- *   post:
- *     summary: Create a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *                   name:
- *                     type: string
- *                   identificacion:
- *                     type: string
- *                   telefono:
- *                     type: string
- *                   rol:
- *                     type: string
- *                   email:
- *                     type: string
- *     responses:
- *       201:
- *         description: User created
- */
+// 1) Ruta pública: creación de usuario
 router.post('/users', controller.createUser);
+router.get('/users/email/:email', controller.getUserByEmail);
 
-/**
- * @swagger
- * /users/{id}:
- *   put:
- *     summary: Update a user by ID
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: User ID
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *         description: User updated
- *       404:
- *         description: User not found
- */
-router.put('/users/:id', controller.updateUser);
+// 2) A partir de aquí, todas las rutas de /users/* estarán protegidas
+router.use('/users', authenticateJWT);
 
-/**
- * @swagger
- * /users/{id}:
- *   delete:
- *     summary: Delete a user by ID
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: User ID
- *     responses:
- *       200:
- *         description: User deleted
- *       404:
- *         description: User not found
- */
+router.get('/users',        controller.getAllUsers);
+router.get('/users/:id',    controller.getUserById);
+router.put('/users/:id',    controller.updateUser);
 router.delete('/users/:id', controller.deleteUser);
 
 module.exports = router;
