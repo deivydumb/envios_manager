@@ -5,7 +5,7 @@
  *     User:
  *       type: object
  *       required:
- *         - name
+ *         - nombre
  *         - identificacion
  *         - email
  *         - rol
@@ -13,32 +13,42 @@
  *         id:
  *           type: integer
  *           description: The auto-generated ID of the user
- *         name:
+ *         nombre:
  *           type: string
  *           description: The name of the user
  *         identificacion:
  *           type: string
  *           description: Unique identification of the user
+ *         document_type:
+ *           type: string
+ *           description: The type of document (e.g., passport, ID card)
  *         telefono:
  *           type: string
  *           description: The phone number of the user (optional)
  *         email:
  *           type: string
  *           description: The email of the user
+ *         password:
+ *           type: string
+ *           description: The password of the user (hashed)
  *         rol:
  *           type: string
  *           description: The role of the user
  *       example:
  *         id: 1
- *         name: John Doe
+ *         nombre: John Doe
  *         identificacion: 123456789
+ *         document_type: passport
  *         telefono: "+123456789"
  *         email: johndoe@example.com
+ *         password: hashedpassword123
  *         rol: admin
  */
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const { table } = require('console');
+const bcrypt = require('bcrypt');
+
 
 
 const User = sequelize.define('User', {
@@ -48,14 +58,43 @@ const User = sequelize.define('User', {
     autoIncrement: true,
     allowNull: false
   },
-    name: { type: DataTypes.STRING, allowNull: false },
-    identificacion: { type: DataTypes.STRING, unique: true, allowNull: false },
+    nombre: { type: DataTypes.STRING, allowNull: false },
+    identificacion: { type: DataTypes.STRING, allowNull: false },
+    document_type: { type: DataTypes.STRING, allowNull: false },
+    telefono: { 
+      type: DataTypes.STRING, 
+      allowNull: false,
+      validate: {
+        isNumeric: true
+      }
+    },
     telefono: { type: DataTypes.STRING, allowNull: true }, // Cambiado a opcional
-    email: { type: DataTypes.STRING, allowNull: false },
+    email: { type: DataTypes.STRING, unique: true,allowNull: false },
+    password: { 
+      type: DataTypes.STRING, 
+      allowNull: false,
+      validate: {
+        len: [3,30]
+      }
+    },
     rol: { type: DataTypes.STRING, allowNull: false }
   },{
     freezeTableName: true,
     tableName: 'User',
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password')) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      }
+    }
   });
   User.associate = (models) => {
     User.hasMany(models.Shipment, {

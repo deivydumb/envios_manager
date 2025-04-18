@@ -122,6 +122,6 @@ router.put('/package/:id', controller.update);
  *       200:
  *         description: Journey assigned successfully
  */
-router.patch('/:id/assign-journey', controller.assignJourneyToPackage);
+router.patch('/package/:id/assign-journey', controller.assignJourneyToPackage);
 
 module.exports = router;

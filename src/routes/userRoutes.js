@@ -9,6 +9,7 @@ const controller = require('../controllers/userController');
  *   description: User management
  */
 
+
 /**
  * @swagger
  * /users:
@@ -40,6 +41,7 @@ const controller = require('../controllers/userController');
  */
 router.get('/users', controller.getAllUsers);
 
+router.get('/users/email/:email', controller.getUserByEmail);
 /**
  * @swagger
  * /users/{id}:

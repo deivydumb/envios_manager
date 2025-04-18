@@ -15,6 +15,33 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  const { email } = req.params;
+  try {
+    const user = await service.getUserByEmail(email);
+    if (!user) {
+      return res.status(404).json(buildResponse({
+        status: 404,
+        message: "Usuario no encontrado",
+        data: null
+      }));
+    }
+    res.status(200).json(buildResponse({
+      status: 200,
+      message: "Usuario encontrado",
+      data: user
+    }));
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    res.status(500).json(buildResponse({
+      status: 500,
+      message: "Error interno del servidor",
+      data: null
+    }));
+  }
+};
+
+
 const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -116,5 +143,6 @@ module.exports = {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserByEmail
 };
