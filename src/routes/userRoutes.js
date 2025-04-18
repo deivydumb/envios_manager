@@ -1,11 +1,19 @@
 const express = require('express');
-const router = express.Router();
 const controller = require('../controllers/userController');
+const authenticateJWT = require('../middlewares/auth');
 
-router.get('/users', controller.getAllUsers);
-router.get('/users/:id', controller.getUserById);
+const router = express.Router();
+
+// 1) Ruta pública: creación de usuario
 router.post('/users', controller.createUser);
-router.put('/users/:id', controller.updateUser);
+router.get('/users/email/:email', controller.getUserByEmail);
+
+// 2) A partir de aquí, todas las rutas de /users/* estarán protegidas
+router.use('/users', authenticateJWT);
+
+router.get('/users',        controller.getAllUsers);
+router.get('/users/:id',    controller.getUserById);
+router.put('/users/:id',    controller.updateUser);
 router.delete('/users/:id', controller.deleteUser);
 
 module.exports = router;

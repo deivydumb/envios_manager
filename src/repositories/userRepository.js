@@ -10,13 +10,16 @@ const getAllUsers = () => {
 const findById = async (id) => {
   return await UserModel.findByPk(id); 
 };
+const findByEmail = async (email) => {
+  return await UserModel.findOne({ where: { email } });
+}
 
 const create = async (userData) => {
   try {
     return await UserModel.create(userData);
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
-      const duplicateField = error.errors[0].path; // Tomamos el primer campo duplicado
+      const duplicateField = error.errors[0].path;
       throw { 
         status: 400, 
         message: 'Dato duplicado: ' + duplicateField,
@@ -60,5 +63,6 @@ module.exports = {
   findById,
   create,
   update,
-  remove
+  remove,
+  findByEmail
 };

@@ -6,11 +6,15 @@ const getUsers = () => {
   return repo.getAllUsers();
 };
 
+const getUserByEmail = async (email) => {
+  return await repo.findByEmail(email);
+};
+
 const getUserById = async (id) => {
   return await repo.findById(id); 
 };
 const createUser = async (userData) => {
-  const requiredFields = ['name', 'identificacion', 'email', 'rol'];
+  const requiredFields = ['nombre', 'identificacion', 'email', 'rol'];
   const missingFields = requiredFields.filter(field => !userData[field]);
 
   if (missingFields.length > 0) {
@@ -48,5 +52,6 @@ module.exports = {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserByEmail
 };
