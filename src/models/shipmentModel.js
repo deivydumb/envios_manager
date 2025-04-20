@@ -96,6 +96,7 @@ const Shipment = sequelize.define('Shipment', {
   },
   estado: {
     type: DataTypes.ENUM(
+      'en espera',
       'preparacion',
       'transito',
       'en_reparto',

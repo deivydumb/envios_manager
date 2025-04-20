@@ -65,7 +65,7 @@ const Conveyor = sequelize.define(
           identificacion: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: false
           },
           telefono: {
             type: DataTypes.STRING,
@@ -74,7 +74,7 @@ const Conveyor = sequelize.define(
           email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            unique: false,
             validate: {
               isEmail: true
             }
