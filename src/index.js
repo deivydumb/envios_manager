@@ -24,15 +24,17 @@ const conveyorRoutes = require('./routes/conveyorRoutes.js');
 const journeyRoutes = require('./routes/journeyRoutes.js');
 const vehicleRoutes = require('./routes/vehicleRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
+const authMiddleware = require('./middlewares/auth.js');
 
 app.use('/api', userRoutes);
+app.use('/api', authRoutes);
+app.use(authMiddleware);
 app.use('/api', packageRoutes);
-// Elimina esta línea duplicada: app.use('/api',packageRoutes)
 app.use('/api', shipmentRoutes); 
 app.use('/api', conveyorRoutes);
 app.use('/api', journeyRoutes);
 app.use('/api', vehicleRoutes);
-app.use('/api', authRoutes);
+
 
 // Swagger
 const { swaggerUi, swaggerSpec } = require('./config/swagger.js');
