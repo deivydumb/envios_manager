@@ -113,11 +113,29 @@ const assignJourneyToPackage = async (req, res) => {
   }
 };
 
+const getPackagesEnEspera = async (req, res) => {
+  try {
+    const packages = await packageService.getPackagesEnEspera();
+    res.json(buildResponse({ 
+        status: 200,
+        message: "Paquetes en espera",
+        data : packages 
+    }));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+
+
+};
+
+
+
 module.exports = {
   createPackage,
   findAll,
   remove,
   findById,
   update,
-  assignJourneyToPackage
+  getPackagesEnEspera
 };

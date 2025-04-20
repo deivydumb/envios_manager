@@ -5,6 +5,9 @@ const router = express.Router();
 const controller = require('../controllers/packageController');
 const { findById } = require('../repositories/userRepository');
 
+
+router.get('/package/on-hold', controller.getPackagesEnEspera);
+
 /**
  * @swagger
  * tags:
@@ -122,6 +125,8 @@ router.put('/package/:id', controller.update);
  *       200:
  *         description: Journey assigned successfully
  */
-router.patch('/package/:id/assign-journey', controller.assignJourneyToPackage);
+/* router.patch('/package/:id/assign-journey', controller.assignJourneyToPackage); */
+
+
 
 module.exports = router;
