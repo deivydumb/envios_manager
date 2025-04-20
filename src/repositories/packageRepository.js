@@ -11,6 +11,23 @@ const findAll = async () => {
   return await packageModel.findAll();
 };
 
+const findPackagesEnEspera = async () => {
+  return await Package.findAll({
+    where: {
+      journeyId: null
+    },
+    include: [
+      {
+        model: Shipment,
+        as: 'shipment',
+        where: {
+          estado: 'en espera'
+        },
+        required: true
+      }
+    ]
+  });
+}
 const findById = async (id) => {
   return await packageModel.findByPk(id, {
     include: [{
@@ -59,4 +76,5 @@ const remove = async (id) => {
     findById,
     findByIds,
     update,
+    findPackagesEnEspera
     }

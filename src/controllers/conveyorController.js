@@ -1,5 +1,6 @@
 const conveyorService = require('../services/conveyorService');
 const {buildResponse, buildValidationError }= require('../utils/responseBuilder.js');
+
 const create = async (req, res) => {
   try {
     const conveyor = await conveyorService.createConveyor(req.body);

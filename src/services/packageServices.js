@@ -83,6 +83,13 @@ const remove = async (id) => {
   await packageRepository.remove(id);
   return { message: `Paquete con ID ${id} eliminado exitosamente` };
 };
+const getPackagesEnEspera = async () => {
+  try {
+    return await packageRepository.findPackagesEnEspera();
+  } catch (error) {
+    throw new Error('Error al obtener paquetes en espera: ' + error.message);
+  }
+}
 
 
   module.exports = {
@@ -91,5 +98,6 @@ const remove = async (id) => {
     findById,
     update,
     remove,
-    assignJourneyToPackage
+    assignJourneyToPackage,
+    getPackagesEnEspera
   };
